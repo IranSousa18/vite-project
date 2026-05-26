@@ -20,7 +20,39 @@ const produtos = [
 ];
 
 const listaProdutos = document.getElementById("listaProdutos");
+const listaCarrinho = document.getElementById("listaCarrinho");
+const totalPedido = document.getElementById("totalPedido")
 let carrinho = [];
+
+function mostrarCarrinho(){
+    listaCarrinho.innerHTML = "";
+    let total = 0;
+    if (carrinho.length === 0){
+        listaCarrinho.innerHTML = `
+        <p class="text-muted">Nenhum item adicionado</p>
+        `;
+        totalPedido.innerHTML = "Total: R$ 0"
+        return;
+    }
+
+    carrinho.forEach((produto, index) => {
+        total += produto.preco;
+
+        listaCarrinho.innerHTML += `
+        <div class="card p-3 mb-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>${produto.nome}</strong>
+                    <p class="mb-0">R$ ${produto.preco}</p>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="removerCarrinho(${index})">Remover</button>
+            </div>
+        </div>
+        `;
+    });
+    totalPedido.innerHTML = `Total: R$ ${total}`;
+}
+
 
 produtos.forEach((produto) => {
     listaProdutos.innerHTML += `
@@ -44,6 +76,7 @@ function adicionarCarrinho(nomeProduto){
     });
 
     carrinho.push(produtoSelecionado);
+    mostrarCarrinho();
     console.log(carrinho);
     alert(`${nomeProduto} adicionado ao carrinho`);
 }
