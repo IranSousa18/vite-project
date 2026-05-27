@@ -57,7 +57,7 @@ function mostrarCarrinho(){
 produtos.forEach((produto) => {
     listaProdutos.innerHTML += `
     <div class="col-md-3 mb-4">
-        <div class="card p--3 h-100">
+        <div class="card p-3 h-100">
             <h3>${produto.nome}</h3>
             <p class="fs-5">
                 R$ ${produto.preco}
@@ -78,7 +78,13 @@ function adicionarCarrinho(nomeProduto){
     carrinho.push(produtoSelecionado);
     mostrarCarrinho();
     console.log(carrinho);
-    alert(`${nomeProduto} adicionado ao carrinho`);
+    
+}
+
+function removerCarrinho(index){
+    carrinho.splice(index, 1);
+    mostrarCarrinho();
 }
 
 window.adicionarCarrinho = adicionarCarrinho;
+window.removerCarrinho = removerCarrinho;
