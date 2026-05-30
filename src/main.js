@@ -7,70 +7,82 @@ const produtos = [
         nome: "Hamburguer",
         preco: 25
     },
-
     {
         nome: "Batata Frita",
         preco: 10
     },
-
     {
         nome: "Refrigerante",
         preco: 5
     },
 ];
 
-const listaProdutos = document.getElementById("listaProdutos");
-const listaCarrinho = document.getElementById("listaCarrinho");
-const totalPedido = document.getElementById("totalPedido")
+const listaProdutos = $("#listaProdutos");
+const listaCarrinho = $("#listaCarrinho");
+const totalPedido = $("#totalPedido");
+
 let carrinho = [];
 
-function mostrarCarrinho(){
-    listaCarrinho.innerHTML = "";
+function mostrarProdutos() {
+    listaProdutos.html("");
+    produtos.forEach((produto) => {
+        listaProdutos.append(`
+            <div class="col-md-3 mb-4">
+                <div class="card p-3 h-100">
+                    <h3>${produto.nome}</h3>
+                    <p class="fs-5">
+                        R$ ${produto.preco}
+                    </p>
+                    <button
+                        class="btn btn-success btnAdicionar"
+                        data-nome="${produto.nome}"
+                    >
+                        Adicionar
+                    </button>
+                </div>
+            </div>
+        `);
+    });
+}
+
+function mostrarCarrinho() {
+    listaCarrinho.html("");
+
     let total = 0;
-    if (carrinho.length === 0){
-        listaCarrinho.innerHTML = `
-        <p class="text-muted">Nenhum item adicionado</p>
-        `;
-        totalPedido.innerHTML = "Total: R$ 0"
+
+    if (carrinho.length === 0) {
+        listaCarrinho.html(`
+            <p class="text-muted">Nenhum item adicionado</p>
+        `);
+
+        totalPedido.html("Total: R$ 0");
         return;
     }
 
     carrinho.forEach((produto, index) => {
         total += produto.preco;
-
-        listaCarrinho.innerHTML += `
-        <div class="card p-3 mb-2">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>${produto.nome}</strong>
-                    <p class="mb-0">R$ ${produto.preco}</p>
+        listaCarrinho.append(`
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${produto.nome}</strong>
+                        <p class="mb-0">R$ ${produto.preco}</p>
+                    </div>
+                    <button 
+                        class="btn btn-danger btn-sm btnRemover"
+                        data-index="${index}"
+                    >
+                        Remover
+                    </button>
                 </div>
-                <button class="btn btn-danger btn-sm" onclick="removerCarrinho(${index})">Remover</button>
             </div>
-        </div>
-        `;
+        `);
     });
-    totalPedido.innerHTML = `Total: R$ ${total}`;
+
+    totalPedido.html(`Total: R$ ${total}`);
 }
 
-
-produtos.forEach((produto) => {
-    listaProdutos.innerHTML += `
-    <div class="col-md-3 mb-4">
-        <div class="card p-3 h-100">
-            <h3>${produto.nome}</h3>
-            <p class="fs-5">
-                R$ ${produto.preco}
-            </p>
-            <button class="btn btn-success" onclick="adicionarCarrinho('${produto.nome}')">
-                Adicionar
-            </button>
-        </div>
-    </div>
-    `;
-});
-
-function adicionarCarrinho(nomeProduto){
+function adicionarCarrinho(nomeProduto) {
     const produtoSelecionado = produtos.find((produto) => {
         return produto.nome === nomeProduto;
     });
@@ -78,13 +90,21 @@ function adicionarCarrinho(nomeProduto){
     carrinho.push(produtoSelecionado);
     mostrarCarrinho();
     console.log(carrinho);
-    
 }
 
-function removerCarrinho(index){
+function removerCarrinho(index) {
     carrinho.splice(index, 1);
     mostrarCarrinho();
 }
 
-window.adicionarCarrinho = adicionarCarrinho;
-window.removerCarrinho = removerCarrinho;
+$(document).on("click", ".btnAdicionar", function () {
+    const nomeProduto = $(this).data("nome");
+    adicionarCarrinho(nomeProduto);
+});
+
+$(document).on("click", ".btnRemover", function () {
+    const index = $(this).data("index");
+    removerCarrinho(index);
+});
+
+mostrarProdutos();
