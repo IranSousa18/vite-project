@@ -91,7 +91,7 @@ As próximas versões do KitchenOS poderão incluir:
 
 ## Equipe
 
-* Iran Cosme de Souza
+* Iran Cosme de Sousa
 * Roberto Neyviton Serejo de Araújo
 * Antônio Dyelson Costa da Silva
 * Franklin Nelson Silva Castro Junior
