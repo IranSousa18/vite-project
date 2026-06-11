@@ -108,3 +108,71 @@ $(document).on("click", ".btnRemover", function () {
 });
 
 mostrarProdutos();
+
+const usuarioSistema = {
+    email: "admin@kitchenos.com",
+    senha: "123456"
+};
+
+$("#formLogin").on("submit", function (event) {
+    event.preventDefault();
+
+    const email = $("#emailLogin").val();
+    const senha = $("#senhaLogin").val();
+
+    if (
+        email === usuarioSistema.email &&
+        senha === usuarioSistema.senha
+    ) {
+        alert("Login realizado com sucesso!");
+        window.location.href = "cardapio.html";
+    } else {
+        alert("Email ou senha inválidos!");
+    }
+});
+
+$("#formCadastro").on("submit", function (event) {
+    event.preventDefault();
+
+    const nome = $("#nomeCadastro").val();
+    const email = $("#emailCadastro").val();
+    const senha = $("#senhaCadastro").val();
+
+    alert(`Cadastro realizado com sucesso, ${nome}!`);
+
+    window.location.href = "login.html";
+});
+
+$("#btnFinalizarPedido").on("click", function () {
+
+    const tipoPedido = $("#tipoPedido").val();
+    const numeroPedido = $("#numeroPedido").val();
+    const formaPagamento = $("#formaPagamento").val();
+    const formaEntrega = $("#formaEntrega").val();
+
+    if (carrinho.length === 0) {
+        alert("Adicione pelo menos um item ao carrinho.");
+        return;
+    }
+
+    if (!tipoPedido || !numeroPedido || !formaPagamento || !formaEntrega) {
+        alert("Preencha todos os dados do pedido.");
+        return;
+    }
+
+    alert(
+        `Pedido finalizado com sucesso!\n\n` +
+        `${tipoPedido}: ${numeroPedido}\n` +
+        `Pagamento: ${formaPagamento}\n` +
+        `Entrega: ${formaEntrega}`
+    );
+
+    carrinho = [];
+
+    mostrarCarrinho();
+
+    $("#tipoPedido").val("");
+    $("#numeroPedido").val("");
+    $("#formaPagamento").val("");
+    $("#formaEntrega").val("");
+});
